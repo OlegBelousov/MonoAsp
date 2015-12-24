@@ -1,17 +1,46 @@
 ﻿@{
-    Layout = null;
+    ViewBag.Title = "Home Page";
 }
 
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title></title>
-</head>
-<body>
-    <div>
-    Hi from View!
+<div class="row">
+    <div class="col-md-4">
+        <p>
+            <b>IP</b><br />
+            @(Request.UserHostAddress)<br />
+        </p>
+        @for (var i = 0; i < Request.Headers.Count; i++)
+        {
+            <p>
+                <b>@(Request.Headers.GetKey(i))</b><br />
+                @foreach (var value in Request.Headers.GetValues(i))
+                {
+                    @(value)<br />
+                }
+            </p>
+        }
+
     </div>
-</body>
-</html>
+    <div class="clearfix"></div>
+    <div class="col-md-4">
+        <p>
+            <b>Cookie</b><br />
+            @{
+
+                var cookie = Request.Cookies.Get("userInfo");
+                if (cookie != null)
+                {
+                    @(cookie.Value)<br />
+                    foreach (var key in cookie.Values.AllKeys)
+                    {
+                        @(key)
+                        <span>=</span>
+                        @(cookie.Values.Get(key))<br />
+                    }
+                }
+            }
+        </p>
+
+
+    </div>
+</div>
